@@ -1,0 +1,33 @@
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+}
+
+#spinner {
+    height: 100%;
+    display: inline-block;
+    transform: translateY(7px);
+    -webkit-transform: translateY(7px);
+    margin-right: 10px;
+}
+#spinner span {
+    font-size: 30px;
+
+    color: #777;
+    animation: spin 2s infinite linear;
+    -webkit-animation: spin2 2s infinite linear;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}

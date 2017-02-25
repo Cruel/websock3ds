@@ -12,7 +12,7 @@
 static u32* socBuffer;
 
 bool service_init() {
-    gfxInit(GSP_RGBA8_OES,GSP_BGR8_OES,false);
+    gfxInit(GSP_RGBA8_OES, GSP_BGR8_OES, false);
     gfxSetDoubleBuffering(GFX_TOP, false);
     consoleInit(GFX_BOTTOM, NULL);
     socBuffer = (u32*)memalign(0x1000, SOC_BUFFERSIZE);
@@ -70,16 +70,19 @@ int main(int argc, char **argv)
             printf("Waiting for client connection...\n");
         }
         if (connecting) {
-            if (socket_client == -1) {
-                socket_client = accept(socket_server, NULL, NULL);
-            } else {
-                connecting = false;
+            struct sockaddr_in addr;
+            socklen_t addrSize = sizeof(addr);
+
+            if (socket_client == -1)
+                socket_client = accept(socket_server, &addr, &addrSize);
+            if (socket_client != -1) {
                 if (http_handshake(socket_client) == -1) {
                     printf("Websocket handshake failed!\n");
                     close(socket_client);
                     socket_client = -1;
                 } else {
-                    printf("Client connected.");
+                    connecting = false;
+                    printf("Client connected (%s).", inet_ntoa(addr.sin_addr));
                     ws3ds_init(socket_client);
                     connected = true;
                 }

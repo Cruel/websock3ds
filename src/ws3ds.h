@@ -1,3 +1,5 @@
+#pragma once
+
 #include <wslay/wslay.h>
 
 typedef void (*ws3ds_message_callback_type)(const struct wslay_event_on_msg_recv_arg *arg);
@@ -5,6 +7,8 @@ typedef void (*ws3ds_message_callback_type)(const struct wslay_event_on_msg_recv
 struct sockaddr_in create_address(unsigned int address, unsigned short port);
 int create_listener(unsigned short port);
 void make_socket_nonblock(int fd);
+int http_handshake(int fd);
+void base64(uint8_t *dst, const uint8_t *src, size_t src_length);
 
 void ws3ds_init(int fd);
 int ws3ds_poll();

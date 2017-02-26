@@ -251,7 +251,6 @@ ssize_t send_callback(wslay_event_context_ptr ctx,
                       const uint8_t *data, size_t len, int flags,
                       void *user_data)
 {
-    printf("send_callback %u - %d %d\n", len, (int)data[0], (int)data[1]);
     struct Session *session = (struct Session*)user_data;
     ssize_t r;
     int sflags = 0;
@@ -278,7 +277,6 @@ ssize_t send_callback(wslay_event_context_ptr ctx,
 ssize_t recv_callback(wslay_event_context_ptr ctx, uint8_t *buf, size_t len,
                       int flags, void *user_data)
 {
-    printf("recv_callback %u\n", len);
     struct Session *session = (struct Session*)user_data;
     ssize_t r;
     if ((r = recv(session->fd, buf, len, 0)) == -1) {
@@ -307,7 +305,6 @@ void on_msg_recv_callback(wslay_event_context_ptr ctx,
                           const struct wslay_event_on_msg_recv_arg *arg,
                           void *user_data)
 {
-    printf("on_msg_recv_callback %d\n", (int)arg->opcode);
     if (wslay_is_ctrl_frame(arg->opcode)) {
         ws3ds_session.fd = -1;
     } else if (ws3ds_message_callback)
@@ -338,7 +335,6 @@ int ws3ds_poll() {
         return -2;
 
     while (wslay_event_want_read(ws3ds_ctx) || wslay_event_want_write(ws3ds_ctx)) {
-        printf(".");
         // Disconnected from client
         if (ws3ds_session.fd == -1) {
             ws3ds_exit();

@@ -3,6 +3,7 @@ var version = "1.0";
 var socketConnected = null;
 var connected = false;
 var canceled = true;
+var waitingForApps = false;
 
 var localIp = 0;
 var serverIp = 0;
@@ -21,6 +22,7 @@ function onOpen(e) {
 function onClose(e) {
     console.log("Disconnected!");
     $("#index").stop().fadeOut();
+    waitingForApps = false;
     if (!canceled)
         $("#loading").fadeIn();
 }
@@ -40,12 +42,55 @@ function onMessage(e) {
         } else {
             try {
                 var data = JSON.parse(e.data);
+                var tableBody = $("#apptable tbody");
+                tableBody.empty();
+                for (var i = 0; i < data.length; ++i)
+                    addAppRow(tableBody, data[i]);
+                $("#apptable").fadeIn();
+                waitingForApps = false;
             }
             catch(e) {
                 console.log("Not JSON: " + e.data);
             }
         }
     }
+}
+
+// Convert a 5-bit color component to 8 bit
+function Convert5To8(value) {
+    return (value << 3) | (value >> 2);
+}
+
+// Convert a 6-bit color component to 8 bit
+function Convert6To8(value) {
+    return (value << 2) | (value >> 4);
+}
+
+function addAppRow(obj, data) {
+    var binary = atob(data[3]);
+    var iconData8 = new Uint8Array(binary.length);
+    for(var i = 0; i < binary.length; ++i)
+        iconData8[i] = binary.charCodeAt(i);
+    var iconData16 = new Uint16Array(iconData8.buffer);
+
+    var canvas = $('<canvas />').attr("width",48).attr("height",48)[0];
+    var context = canvas.getContext('2d');
+    var image = context.createImageData(canvas.width, canvas.height);
+    for (var i = 0, x = 0; i < iconData16.length; i++) {
+        var pixel = iconData16[i];
+        image.data[x++] = Convert5To8((pixel >> 11) & 0x1F);
+        image.data[x++] = Convert6To8((pixel >> 5) & 0x3F);
+        image.data[x++] = Convert5To8(pixel & 0x1F);
+        image.data[x++] = 0xFF;
+    }
+    context.putImageData(image, 0, 0);
+
+    var row = $('<tr />');
+    row.append($('<td />').append(canvas));
+    row.append($('<td />').text(data[0]));
+    row.append($('<td />').text(data[1]));
+    row.append($('<td />').text(data[2]));
+    $(obj).append(row);
 }
 
 // Creates websocket connection, and keeps retrying when closed.
@@ -203,6 +248,14 @@ $(function(){
     $("#btnSend").click(function(){
         var text = $("#inputText").val();
         socketConnected.send(text);
+    });
+
+    $("#btnListApps").click(function(){
+        if (waitingForApps)
+            return;
+        $("#apptable").fadeOut();
+        socketConnected.send("LISTAPPS");
+        waitingForApps = true;
     });
 
     // Image sending to server

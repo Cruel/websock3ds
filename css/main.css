@@ -1,12 +1,37 @@
-#loading {
+.center-screen {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
+}
+#intro {
+    width: 410px;
+}
+#intro .container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+#intro .checkbox {
+    /*color: #AAA;*/
+    opacity: 0.8;
+}
+#ip {
+    opacity: 0;
+}
+#btnCancel {
+    opacity: 0.5;
+}
+#loading {
     height: 40px;
     line-height: 40px;
     font-size: 20px;
+}
+#qr {
+    width: 60px;
+    margin-right: 60px;
+    cursor: pointer;
 }
 
 #spinner {
@@ -30,4 +55,22 @@
 @-webkit-keyframes spin2 {
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
+}
+
+#file {
+    position: absolute;
+    visibility: hidden;
+}
+canvas {
+    margin: 5px;
+    outline: 1px solid #ccc;
+}
+
+.error {
+    color: #883333;
+    font-size: 16px;
+    font-weight: bold;
+}
+.cloak {
+    display: none;
 }

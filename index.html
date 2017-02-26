@@ -19,20 +19,48 @@
 </head>
 <body>
 
-<div id="index">
+<div id="index" class="text-center cloak">
 	<div class="container">
-		<div class="well">
-    	       <input type="text" id="inputText" placeholder="Text to send"/> <button id="btnSend">Send</button>
+        <div class="text-center">
+            <canvas id="imgCanvas" width="400" height="240"></canvas>
+            <div>
+                <a id="btnSendImage" class="btn btn-default">Send Image</a>
+                <input id="file" type="file" />
+            </div>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" id="inputText" placeholder="Text to send"/> <a id="btnSend" class="btn btn-default">Send Text</a>
         </div>
         <div>
-            <input type="file" id="imageLoader"/>
-            <canvas id="imgCanvas" width="400" height="240"></canvas>
+            <a id="btnListApps" class="btn btn-default">List Installed Titles</a>
+        </div>
+        <div>
         </div>
 	</div>
 </div>
 
-<div id="loading">
-    <span id="spinner"><span class="glyphicon glyphicon-refresh"></span></span> Searching for 3DS console...
+<div id="intro" class="center-screen text-center">
+    <noscript class="error">You need Javascript enabled.</noscript>
+    <span id="websocket-error" class="error cloak">Your browser doesn't support websockets. Sad.</span>
+    <div class="container cloak">
+        <div class="well">
+            <img id="qr" src="/img/qr.png" />
+            <a id="btnStart" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-off"></span> Start</a>
+        </div>
+        <div>
+            <div class="checkbox">
+                <label>
+                    <input id="use_ip" type="checkbox"> Use specific IP
+                </label>
+            </div>
+            <div>
+                <input id="ip" type="text" placeholder="e.g. 192.168.0.0">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading" class="center-screen cloak">
+    <span id="spinner"><span class="glyphicon glyphicon-refresh"></span></span> Searching for 3DS console... <a class="btn btn-lg"><span id="btnCancel" class="glyphicon glyphicon-ban-circle"></span></a>
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

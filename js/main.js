@@ -139,6 +139,8 @@ function getLocalIp() {
     if (!window.RTCPeerConnection)
         return false;
     var pc = new RTCPeerConnection({iceServers:[]}), noop = function(){};
+    if (!pc.createDataChannel || !pc.createOffer)
+        return false;
     pc.createDataChannel("");    //create a bogus data channel
     pc.createOffer(pc.setLocalDescription.bind(pc), noop);    // create offer and set local description
     pc.onicecandidate = function(ice){  //listen for candidate events

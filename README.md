@@ -2,6 +2,8 @@ Incomplete README.
 
 ## Limit
 
+SSL secured websockets (wss://) aren't currently supported, so any site served over https cannot connect to it. Was going to add it, but Chrome seems to reject self-signed certs over websocket.
+
 Some browsers lack websocket support, but not many. WebRTC (non-essential) is what seems to be the component with the least browser support, though mostly just lacking Safari and maybe Edge. WebRTC is used to get local IP of the machine to assist with "scanning" local network for 3DS, so without it, it will force the users in the UI to specify an IP address.
 
 Even with WebRTC, local network scan can fail. It merely takes the local ip and scans a limit range (e.g. it's commonly 192.168.0.{0-255}).
